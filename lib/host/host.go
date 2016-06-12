@@ -36,7 +36,7 @@ func int8ToString(bs [65]int8) string {
 			b[i] = byte(v)
 		}
 	}
-	return string(b)
+	return strings.TrimRight(string(b), "\x00")
 }
 
 func GetHostFacts(f Facter) error {

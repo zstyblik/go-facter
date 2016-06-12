@@ -2,6 +2,7 @@ package formatter
 
 import (
 	"fmt"
+	"sort"
 )
 
 type PlainTextFormatter struct {
@@ -15,9 +16,13 @@ func NewFormatter() *PlainTextFormatter {
 }
 
 func (pf PlainTextFormatter) Print(facts map[string]interface{}) error {
-	// TODO - sort by key first
-	for k, v := range facts {
-		fmt.Printf("%v => %v\n", k, v)
+	var keys []string
+	for k := range facts {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		fmt.Printf("%v => %v\n", k, facts[k])
 	}
 	return nil
 }
@@ -26,10 +31,14 @@ func NewKeyValueFormatter() *KeyValueFormatter {
 	return &KeyValueFormatter{}
 }
 
-func (jf KeyValueFormatter) Print(facts map[string]interface{}) error {
-	// TODO - sort by key first
-	for k, v := range facts {
-		fmt.Printf("%v:%v\n", k, v)
+func (kvf KeyValueFormatter) Print(facts map[string]interface{}) error {
+	var keys []string
+	for k := range facts {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		fmt.Printf("%v: %v\n", k, facts[k])
 	}
 	return nil
 }

@@ -3,6 +3,7 @@ package net
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -75,6 +76,7 @@ func GetNetFacts(f Facter) error {
 		}
 	}
 	if len(ifaces) > 0 {
+		sort.Strings(ifaces)
 		f.Add("interfaces", strings.Join(ifaces, ","))
 	}
 

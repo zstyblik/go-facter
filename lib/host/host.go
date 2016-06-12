@@ -13,6 +13,19 @@ type Facter interface {
 	Add(string, interface{})
 }
 
+func guessArch(HWModel string) string {
+	var arch string
+	switch HWModel {
+	case "x86_64":
+		arch = "amd64"
+		break
+	default:
+		arch = "unknown"
+		break
+	}
+	return arch
+}
+
 // int8ToString converts [65]int8 in syscall.Utsname to string
 func int8ToString(bs [65]int8) string {
 	b := make([]byte, len(bs))
@@ -79,7 +92,10 @@ func GetHostFacts(f Facter) error {
 		kernelRelease := int8ToString(uname.Release)
 		f.Add("kernelrelease", kernelRelease)
 		f.Add("kernelversion", strings.Split(kernelRelease, "-")[0])
-		f.Add("hardwaremodel", int8ToString(uname.Machine))
+
+		hardwareModel := int8ToString(uname.Machine)
+		f.Add("hardwaremodel", hardwareModel)
+		f.Add("architecture", guessArch(hardwareModel))
 	}
 
 	return nil

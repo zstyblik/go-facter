@@ -1,0 +1,15 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "NH2kjfjlFIGuSdcok+Xg0/mjV5E=",
+			"path": "github.com/shirou/gopsutil",
+			"revision": "e8f7a95747d711f34ddfe9dd9b825a84bd059dec",
+			"revisionTime": "2016-04-07T06:55:32Z",
+			"version": "v2.0.0",
+			"versionExact": "v2.0.0"
+		}
+	],
+	"rootPath": "github.com/zstyblik/go-facter"
+}

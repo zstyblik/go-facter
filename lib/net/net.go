@@ -24,8 +24,10 @@ func GetNetFacts(f Facter) error {
 		return err
 	}
 
+	var ifaces []string
 	for _, v := range netIfaces {
 		ifName := strings.ToLower(v.Name)
+		ifaces = append(ifaces, ifName)
 		if v.HardwareAddr != "" {
 			f.Add(fmt.Sprintf("macaddress_%v", ifName), v.HardwareAddr)
 		}
@@ -71,6 +73,9 @@ func GetNetFacts(f Facter) error {
 				f.Add(labelNetmask, netmaskStr)
 			}
 		}
+	}
+	if len(ifaces) > 0 {
+		f.Add("interfaces", strings.Join(ifaces, ","))
 	}
 
 	return nil

@@ -1,6 +1,7 @@
 package host
 
 import (
+	"fmt"
 	"os"
 	"os/user"
 	"strings"
@@ -72,6 +73,7 @@ func GetHostFacts(f Facter) error {
 	f.Add("uptime_minutes", hostInfo.Uptime/60)
 	f.Add("uptime_hours", hostInfo.Uptime/60/60)
 	f.Add("uptime_days", hostInfo.Uptime/60/60/24)
+	f.Add("uptime", fmt.Sprintf("%d days", hostInfo.Uptime/60/60/24))
 	f.Add("virtual", hostInfo.VirtualizationSystem)
 
 	envPath := os.Getenv("PATH")

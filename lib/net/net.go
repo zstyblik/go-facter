@@ -25,10 +25,11 @@ func GetNetFacts(f Facter) error {
 	}
 
 	for _, v := range netIfaces {
+		ifName := strings.ToLower(v.Name)
 		if v.HardwareAddr != "" {
-			f.Add(fmt.Sprintf("macaddress_%v", v.Name), v.HardwareAddr)
+			f.Add(fmt.Sprintf("macaddress_%v", ifName), v.HardwareAddr)
 		}
-		f.Add(fmt.Sprintf("mtu_%v", v.Name), v.MTU)
+		f.Add(fmt.Sprintf("mtu_%v", ifName), v.MTU)
 		addr4idx := (-1)
 		addr6idx := (-1)
 		for _, ipAddr := range v.Addrs {
@@ -36,20 +37,20 @@ func GetNetFacts(f Facter) error {
 			var labelNetmask string
 			if reIPv4.MatchString(ipAddr.Addr) {
 				if addr4idx < 0 {
-					labelIPAddr = fmt.Sprintf("ipaddress_%v", v.Name)
-					labelNetmask = fmt.Sprintf("netmask_%v", v.Name)
+					labelIPAddr = fmt.Sprintf("ipaddress_%v", ifName)
+					labelNetmask = fmt.Sprintf("netmask_%v", ifName)
 				} else {
-					labelIPAddr = fmt.Sprintf("ipaddress_%v_%d", v.Name,
+					labelIPAddr = fmt.Sprintf("ipaddress_%v_%d", ifName,
 						addr4idx)
-					labelNetmask = fmt.Sprintf("netmask_%v_%d", v.Name,
+					labelNetmask = fmt.Sprintf("netmask_%v_%d", ifName,
 						addr4idx)
 				}
 				addr4idx++
 			} else {
 				if addr6idx < 0 {
-					labelIPAddr = fmt.Sprintf("ipaddress6_%v", v.Name)
+					labelIPAddr = fmt.Sprintf("ipaddress6_%v", ifName)
 				} else {
-					labelIPAddr = fmt.Sprintf("ipaddress6_%v_%d", v.Name,
+					labelIPAddr = fmt.Sprintf("ipaddress6_%v_%d", ifName,
 						addr6idx)
 				}
 				addr6idx++

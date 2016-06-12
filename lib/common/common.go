@@ -5,30 +5,40 @@ import (
 	"math"
 )
 
-func ConvertBytes(in uint64, unit string) (float64, string, error) {
-	var outUnit string
-	out := in / 1024
-	if out < 1 {
-		return float64(in), unit, nil
-	} else {
-		switch unit {
-		case "B":
-			outUnit = "kB"
-			break
-		case "kB":
-			outUnit = "MB"
-			break
-		case "MB":
-			outUnit = "GB"
-			break
-		case "GB":
-			outUnit = "TB"
-			break
-		default:
-			return float64(in), unit, nil
-		}
-		return ConvertBytes(out, outUnit)
+var (
+	ByteUnits = map[int]string{
+		0: "B",
+		1: "kB",
+		2: "MB",
+		3: "GB",
+		4: "TB",
 	}
+)
+
+func ConvertBytes(in uint64) (float64, string, error) {
+	out := float64(in)
+	idx := 0
+	maxIdx := len(ByteUnits)
+	for idx < maxIdx && out > 1 {
+		tmp := float64(out) / 1024
+		if tmp < 1 {
+			break
+		}
+		out = tmp
+		idx++
+	}
+	return out, ByteUnits[idx], nil
+}
+
+func ConvertBytesTo(in uint64, maxUnit string) (float64, string, error) {
+	out := float64(in)
+	idx := 0
+	maxIdx := len(ByteUnits)
+	for idx < maxIdx && maxUnit != ByteUnits[idx] {
+		out = float64(out) / 1024
+		idx++
+	}
+	return out, ByteUnits[idx], nil
 }
 
 func ConvertNetmask(in uint8) (string, error) {

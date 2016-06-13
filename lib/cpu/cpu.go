@@ -12,7 +12,6 @@ type Facter interface {
 }
 
 func GetCPUFacts(f Facter) error {
-	var physCount uint64
 	totalCount, err := c.Counts(true)
 	if err != nil {
 		return err
@@ -23,13 +22,14 @@ func GetCPUFacts(f Facter) error {
 	if err != nil {
 		return err
 	}
+	physIDs := make(map[uint64]struct{})
 	for _, v := range CPUs {
 		physID, err := strconv.ParseUint(v.PhysicalID, 10, 32)
 		if err == nil {
-			physCount += physID
+			physIDs[physID] = struct{}{}
 		}
 		f.Add(fmt.Sprintf("processor%v", v.CPU), v.ModelName)
 	}
-	f.Add("physicalprocessorcount", physCount+1)
+	f.Add("physicalprocessorcount", len(physIDs))
 	return nil
 }

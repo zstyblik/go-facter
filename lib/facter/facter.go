@@ -20,7 +20,7 @@ type Formatter interface {
 func New(userConf *FacterConfig) *Facter {
 	var conf *FacterConfig
 	if userConf != nil {
-		conf = conf
+		conf = userConf
 	} else {
 		conf = &FacterConfig{
 			Formatter: formatter.NewFormatter(),

@@ -92,8 +92,11 @@ func GetHostFacts(f Facter) error {
 	err = syscall.Uname(&uname)
 	if err == nil {
 		kernelRelease := int8ToString(uname.Release)
+		kernelVersion := strings.Split(kernelRelease, "-")[0]
+		kvSplitted := strings.Split(kernelVersion, ".")
 		f.Add("kernelrelease", kernelRelease)
-		f.Add("kernelversion", strings.Split(kernelRelease, "-")[0])
+		f.Add("kernelversion", kernelVersion)
+		f.Add("kernelmajversion", strings.Join(kvSplitted[0:2], "."))
 
 		hardwareModel := int8ToString(uname.Machine)
 		f.Add("hardwaremodel", hardwareModel)

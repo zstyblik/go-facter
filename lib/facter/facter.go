@@ -9,7 +9,7 @@ type Facter struct {
 	formatter Formatter
 }
 
-type FacterConfig struct {
+type Config struct {
 	Formatter Formatter
 }
 
@@ -17,12 +17,12 @@ type Formatter interface {
 	Print(map[string]interface{}) error
 }
 
-func New(userConf *FacterConfig) *Facter {
-	var conf *FacterConfig
+func New(userConf *Config) *Facter {
+	var conf *Config
 	if userConf != nil {
 		conf = userConf
 	} else {
-		conf = &FacterConfig{
+		conf = &Config{
 			Formatter: formatter.NewFormatter(),
 		}
 	}

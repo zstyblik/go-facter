@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	conf := facter.FacterConfig{}
+	conf := facter.Config{}
 	plainText := flag.Bool("plaintext", false,
 		"Emit facts as key => value pairs")
 	keyValue := flag.Bool("keyvalue", false,

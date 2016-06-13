@@ -6,6 +6,7 @@ import (
 )
 
 var (
+	// ByteUnits is a k=>v map of units for conversion
 	ByteUnits = map[int]string{
 		0: "B",
 		1: "kB",
@@ -15,6 +16,7 @@ var (
 	}
 )
 
+// ConvertBytes converts bytes to the highest possible unit
 func ConvertBytes(in uint64) (float64, string, error) {
 	out := float64(in)
 	idx := 0
@@ -30,6 +32,7 @@ func ConvertBytes(in uint64) (float64, string, error) {
 	return out, ByteUnits[idx], nil
 }
 
+// ConvertBytesTo converts bytes to the specified unit
 func ConvertBytesTo(in uint64, maxUnit string) (float64, string, error) {
 	out := float64(in)
 	idx := 0
@@ -41,6 +44,7 @@ func ConvertBytesTo(in uint64, maxUnit string) (float64, string, error) {
 	return out, ByteUnits[idx], nil
 }
 
+// ConvertNetmask converts CIDR (netmask) to Netmask
 func ConvertNetmask(in uint8) (string, error) {
 	if in > 32 {
 		return "", fmt.Errorf("Invalid Netmask given.")

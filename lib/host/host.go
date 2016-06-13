@@ -64,13 +64,13 @@ func GetHostFacts(f Facter) error {
 	}
 	f.Add("hostname", *hostname)
 
-	var is_virtual bool
+	var isVirtual bool
 	if hostInfo.VirtualizationRole == "host" {
-		is_virtual = false
+		isVirtual = false
 	} else {
-		is_virtual = true
+		isVirtual = true
 	}
-	f.Add("is_virtual", is_virtual)
+	f.Add("is_virtual", isVirtual)
 
 	f.Add("kernel", capitalize(hostInfo.OS))
 	f.Add("operatingsystemrelease", hostInfo.PlatformVersion)

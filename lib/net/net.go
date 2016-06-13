@@ -15,10 +15,12 @@ var (
 	reIPv4 = regexp.MustCompile("^[0-9]+\\.")
 )
 
+// Facter interface
 type Facter interface {
 	Add(string, interface{})
 }
 
+// GetNetFacts gathers network related facts
 func GetNetFacts(f Facter) error {
 	netIfaces, err := n.Interfaces()
 	if err != nil {

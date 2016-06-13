@@ -7,10 +7,12 @@ import (
 	d "github.com/shirou/gopsutil/disk"
 )
 
+// Facter interface
 type Facter interface {
 	Add(string, interface{})
 }
 
+// GetDiskFacts gathers facts related to HDDs
 func GetDiskFacts(f Facter) error {
 	partitions, err := d.Partitions(false)
 	if err != nil {

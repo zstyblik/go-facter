@@ -7,10 +7,12 @@ import (
 	c "github.com/shirou/gopsutil/cpu"
 )
 
+// Facter interface
 type Facter interface {
 	Add(string, interface{})
 }
 
+// GetCPUFacts gathers facts related to CPU
 func GetCPUFacts(f Facter) error {
 	totalCount, err := c.Counts(true)
 	if err != nil {

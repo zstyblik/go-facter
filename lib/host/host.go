@@ -10,6 +10,7 @@ import (
 	h "github.com/shirou/gopsutil/host"
 )
 
+// Facter interface
 type Facter interface {
 	Add(string, interface{})
 }
@@ -21,6 +22,7 @@ func capitalize(label string) string {
 		strings.TrimPrefix(label, firstLetter))
 }
 
+// guessArch tries to guess architecture based on HW model
 func guessArch(HWModel string) string {
 	var arch string
 	switch HWModel {
@@ -47,6 +49,7 @@ func int8ToString(bs [65]int8) string {
 	return strings.TrimRight(string(b), "\x00")
 }
 
+// GetHostFacts gathers facts related to Host
 func GetHostFacts(f Facter) error {
 	hostInfo, err := h.Info()
 	if err != nil {

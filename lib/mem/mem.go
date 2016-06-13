@@ -7,10 +7,12 @@ import (
 	"github.com/zstyblik/go-facter/lib/common"
 )
 
+// Facter interface
 type Facter interface {
 	Add(string, interface{})
 }
 
+// GetMemoryFacts gathers facts related to system memory
 func GetMemoryFacts(f Facter) error {
 	hostVMem, err := m.VirtualMemory()
 	if err != nil {

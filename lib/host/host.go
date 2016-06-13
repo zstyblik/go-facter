@@ -14,6 +14,13 @@ type Facter interface {
 	Add(string, interface{})
 }
 
+// capitalize the first letter of given string
+func capitalize(label string) string {
+	firstLetter := strings.SplitN(label, "", 2)[0]
+	return fmt.Sprintf("%v%v", strings.ToUpper(firstLetter),
+		strings.TrimPrefix(label, firstLetter))
+}
+
 func guessArch(HWModel string) string {
 	var arch string
 	switch HWModel {
@@ -45,7 +52,7 @@ func GetHostFacts(f Facter) error {
 	if err != nil {
 		return err
 	}
-	// TODO - capitalize the first letter of kernel and OS
+
 	f.Add("fqdn", hostInfo.Hostname)
 	splitted := strings.SplitN(hostInfo.Hostname, ".", 2)
 	var hostname *string
@@ -65,10 +72,10 @@ func GetHostFacts(f Facter) error {
 	}
 	f.Add("is_virtual", is_virtual)
 
-	f.Add("kernel", hostInfo.OS)
+	f.Add("kernel", capitalize(hostInfo.OS))
 	f.Add("operatingsystemrelease", hostInfo.PlatformVersion)
-	f.Add("operatingsystem", hostInfo.Platform)
-	f.Add("osfamily", hostInfo.PlatformFamily)
+	f.Add("operatingsystem", capitalize(hostInfo.Platform))
+	f.Add("osfamily", capitalize(hostInfo.PlatformFamily))
 	f.Add("uptime_seconds", hostInfo.Uptime)
 	f.Add("uptime_minutes", hostInfo.Uptime/60)
 	f.Add("uptime_hours", hostInfo.Uptime/60/60)

@@ -14,16 +14,20 @@ import (
 
 func main() {
 	conf := facter.Config{}
-	plainText := flag.Bool("plaintext", false,
+	ptFormat := flag.Bool("plaintext", false,
 		"Emit facts as key => value pairs")
-	keyValue := flag.Bool("keyvalue", false,
+	kvFormat := flag.Bool("keyvalue", false,
 		"Emit facts as key:value pairs")
+	jsonFormat := flag.Bool("json", false,
+		"Emit facts as a JSON")
 	flag.Parse()
 
-	if *plainText == true {
+	if *ptFormat == true {
 		conf.Formatter = formatter.NewFormatter()
-	} else if *keyValue == true {
+	} else if *kvFormat == true {
 		conf.Formatter = formatter.NewKeyValueFormatter()
+	} else if *jsonFormat == true {
+		conf.Formatter = formatter.NewJSONFormatter()
 	} else {
 		conf.Formatter = formatter.NewFormatter()
 	}

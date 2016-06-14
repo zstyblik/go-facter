@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 )
@@ -11,6 +12,10 @@ type PlainTextFormatter struct {
 
 // KeyValueFormatter prints-out facts in k:v format
 type KeyValueFormatter struct {
+}
+
+// JSONFormatter prints-out facts in JSON format
+type JSONFormatter struct {
 }
 
 // NewFormatter returns new plain-text formatter
@@ -46,5 +51,20 @@ func (kvf KeyValueFormatter) Print(facts map[string]interface{}) error {
 	for _, k := range keys {
 		fmt.Printf("%v: %v\n", k, facts[k])
 	}
+	return nil
+}
+
+// NewJSONFormatter returns new JSON formatter
+func NewJSONFormatter() *JSONFormatter {
+	return &JSONFormatter{}
+}
+
+// Print prints-out facts in JSON format
+func (jf *JSONFormatter) Print(facts map[string]interface{}) error {
+	b, err := json.MarshalIndent(facts, "", "  ")
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%s\n", b)
 	return nil
 }

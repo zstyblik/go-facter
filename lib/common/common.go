@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 var (
@@ -69,4 +70,28 @@ func ConvertNetmask(in uint8) (string, error) {
 	}
 	return fmt.Sprintf("%d.%d.%d.%d", octets[1], octets[2], octets[3],
 		octets[4]), nil
+}
+
+func GetHostEtc() string {
+	host_etc := os.Getenv("HOST_ETC")
+	if host_etc == "" {
+		host_etc = "/etc"
+	}
+	return host_etc
+}
+
+func GetHostSys() string {
+	host_sys := os.Getenv("HOST_SYS")
+	if host_sys == "" {
+		host_sys = "/sys"
+	}
+	return host_sys
+}
+
+func GetHostProc() string {
+	host_proc := os.Getenv("HOST_PROC")
+	if host_proc == "" {
+		host_proc = "/proc"
+	}
+	return host_proc
 }

@@ -6,6 +6,7 @@ import (
 	"os/user"
 	"strings"
 	"syscall"
+	"time"
 
 	h "github.com/shirou/gopsutil/host"
 )
@@ -112,6 +113,9 @@ func GetHostFacts(f Facter) error {
 		f.Add("hardwaremodel", hardwareModel)
 		f.Add("architecture", guessArch(hardwareModel))
 	}
+
+	z, _ := time.Now().Zone()
+	f.Add("timezone", z)
 
 	return nil
 }

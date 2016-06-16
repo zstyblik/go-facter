@@ -35,6 +35,9 @@ func ConvertBytes(in uint64) (float64, string, error) {
 
 // ConvertBytesTo converts bytes to the specified unit
 func ConvertBytesTo(in uint64, maxUnit string) (float64, string, error) {
+	if maxUnit == "" {
+		return 0, "", fmt.Errorf("Given maximum unit is invalid.")
+	}
 	out := float64(in)
 	idx := 0
 	maxIdx := len(ByteUnits)

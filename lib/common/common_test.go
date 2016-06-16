@@ -13,6 +13,76 @@ type netmaskTPair struct {
 	err error
 }
 
+type byteTPair struct {
+	in      uint64
+	inUnit  string
+	out     float64
+	outUnit string
+}
+
+var EPSILON float64 = 1
+
+func floatEquals(a, b float64) bool {
+	if (a-b) < EPSILON && (b-a) < EPSILON {
+		return true
+	}
+	return false
+}
+
+func TestConvertBytes(t *testing.T) {
+	testpairs := []byteTPair{
+		{5238784, "", 4.996094, "MB"},
+		{10485760, "", 10.000000, "MB"},
+		{100910080, "", 96.235352, "MB"},
+		{3267260416, "", 3.042873, "GB"},
+		{306816327680, "", 285.744972, "GB"},
+	}
+	for _, pair := range testpairs {
+		out, outUnit, err := ConvertBytes(pair.in)
+		if err != nil {
+			t.Logf("input: %v; %v != nil", pair, err)
+			t.Fail()
+		}
+		if strings.Compare(outUnit, pair.outUnit) != 0 {
+			t.Logf("input: %v; '%v' != '%v'", pair, outUnit, pair.outUnit)
+			t.Fail()
+		}
+		equality := floatEquals(out, pair.out)
+		if equality == false {
+			t.Logf("input: %v; %f != %f; diff: %f, %v", pair, out, pair.out,
+				(out - pair.out), equality)
+			t.Fail()
+		}
+	}
+}
+
+func TestConvertBytesTo(t *testing.T) {
+	testpairs := []byteTPair{
+		{5238784, "kB", 5116, ""},
+		{10485760, "kB", 10240, ""},
+		{100910080, "MB", 96.235352, ""},
+		{3267260416, "MB", 3115.902344, ""},
+		{306816327680, "MB", 292602.851562, ""},
+	}
+	for _, pair := range testpairs {
+		out, outUnit, err := ConvertBytesTo(pair.in, pair.inUnit)
+		if err != nil {
+			t.Logf("input: %v; %v != nil", pair, err)
+			t.Fail()
+		}
+		if strings.Compare(outUnit, pair.inUnit) != 0 {
+			t.Logf("input: %v; '%v' != '%v'", pair, outUnit, pair.inUnit)
+			t.Fail()
+		}
+		equality := floatEquals(out, pair.out)
+		if equality == false {
+			t.Logf("input: %v; %f != %f; diff: %f, %v", pair, out, pair.out,
+				(out - pair.out), equality)
+			t.Fail()
+		}
+	}
+}
+
 func TestConvertNetmask(t *testing.T) {
 	testpairs := []netmaskTPair{
 		{8, "255.0.0.0", nil},

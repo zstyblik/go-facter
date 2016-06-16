@@ -42,6 +42,11 @@ func (f *Facter) Add(k string, v interface{}) {
 	f.facts[k] = v
 }
 
+// Delete deletes given fact
+func (f *Facter) Delete(k string) {
+	delete(f.facts, k)
+}
+
 // Get returns value of given fact, if it exists
 func (f *Facter) Get(k string) (interface{}, bool) {
 	value, ok := f.facts[k]

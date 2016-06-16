@@ -42,6 +42,12 @@ func (f *Facter) Add(k string, v interface{}) {
 	f.facts[k] = v
 }
 
+// Get returns value of given fact, if it exists
+func (f *Facter) Get(k string) (interface{}, bool) {
+	value, ok := f.facts[k]
+	return value, ok
+}
+
 // Print prints-out facts by calling formatter
 func (f *Facter) Print() {
 	f.formatter.Print(f.facts)

@@ -31,6 +31,7 @@ func floatEquals(a, b float64) bool {
 
 func TestConvertBytes(t *testing.T) {
 	testpairs := []byteTPair{
+		{0, "", 0, "B"},
 		{5238784, "", 4.996094, "MB"},
 		{10485760, "", 10.000000, "MB"},
 		{100910080, "", 96.235352, "MB"},
@@ -58,6 +59,7 @@ func TestConvertBytes(t *testing.T) {
 
 func TestConvertBytesTo(t *testing.T) {
 	testpairs := []byteTPair{
+		{0, "MB", 0, ""},
 		{5238784, "kB", 5116, ""},
 		{10485760, "kB", 10240, ""},
 		{100910080, "MB", 96.235352, ""},

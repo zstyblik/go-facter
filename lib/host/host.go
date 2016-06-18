@@ -18,9 +18,12 @@ type Facter interface {
 
 // capitalize the first letter of given string
 func capitalize(label string) string {
-	firstLetter := strings.SplitN(label, "", 2)[0]
-	return fmt.Sprintf("%v%v", strings.ToUpper(firstLetter),
-		strings.TrimPrefix(label, firstLetter))
+	firstLetter := strings.SplitN(label, "", 2)
+	if len(firstLetter) < 1 {
+		return label
+	}
+	return fmt.Sprintf("%v%v", strings.ToUpper(firstLetter[0]),
+		strings.TrimPrefix(label, firstLetter[0]))
 }
 
 // guessArch tries to guess architecture based on HW model

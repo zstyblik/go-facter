@@ -1,10 +1,12 @@
 package disk
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	d "github.com/shirou/gopsutil/disk"
@@ -20,7 +22,7 @@ type Facter interface {
 	Add(string, interface{})
 }
 
-// GetBlockDevices returns list of block devices
+// getBlockDevices returns list of block devices
 func getBlockDevices(all bool) ([]string, error) {
 	blockDevs := []string{}
 	targetDir := fmt.Sprintf("%v/block", common.GetHostSys())
@@ -37,6 +39,44 @@ func getBlockDevices(all bool) ([]string, error) {
 		blockDevs = append(blockDevs, v.Name())
 	}
 	return blockDevs, nil
+}
+
+// getBlockDeviceModel returns model of block device as reported by Linux
+// kernel.
+func getBlockDeviceModel(blockDevice string) (string, error) {
+	model, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/device/model",
+		blockDevice))
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s", bytes.TrimSuffix(model, []byte("\n"))), nil
+}
+
+// getBlockDeviceSize returns size of block device as reported by Linux kernel
+// multiplied by 512.
+func getBlockDeviceSize(blockDevice string) (int64, error) {
+	size, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/size",
+		blockDevice))
+	if err != nil {
+		return 0, err
+	}
+	sizeInt, err := strconv.ParseInt(fmt.Sprintf("%s",
+		bytes.TrimSuffix(size, []byte("\n"))), 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return sizeInt * 512, nil
+}
+
+// getBlockDeviceVendor returns vendor of block device as reported by Linux
+// kernel.
+func getBlockDeviceVendor(blockDevice string) (string, error) {
+	vendor, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/device/vendor",
+		blockDevice))
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s", bytes.TrimSuffix(vendor, []byte("\n"))), nil
 }
 
 // GetDiskFacts gathers facts related to HDDs
@@ -61,9 +101,27 @@ func GetDiskFacts(f Facter) error {
 	}
 
 	blockDevs, err := getBlockDevices(false)
-	if err == nil {
-		sort.Strings(blockDevs)
-		f.Add("blockdevices", strings.Join(blockDevs, ","))
+	if err != nil {
+		return err
+	}
+
+	sort.Strings(blockDevs)
+	f.Add("blockdevices", strings.Join(blockDevs, ","))
+	for _, blockDevice := range blockDevs {
+		size, err := getBlockDeviceSize(blockDevice)
+		if err == nil {
+			f.Add(fmt.Sprintf("blockdevice_%s_size", blockDevice), size)
+		}
+
+		model, err := getBlockDeviceModel(blockDevice)
+		if err == nil {
+			f.Add(fmt.Sprintf("blockdevice_%s_model", blockDevice), model)
+		}
+
+		vendor, err := getBlockDeviceVendor(blockDevice)
+		if err == nil {
+			f.Add(fmt.Sprintf("blockdevice_%s_vendor", blockDevice), vendor)
+		}
 	}
 
 	return nil

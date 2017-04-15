@@ -76,7 +76,9 @@ func getBlockDeviceVendor(blockDevice string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("%s", bytes.TrimSuffix(vendor, []byte("\n"))), nil
+	vendor = bytes.TrimSuffix(vendor, []byte("\n"))
+	vendor = bytes.TrimRight(vendor, " ")
+	return fmt.Sprintf("%s", vendor), nil
 }
 
 // GetDiskFacts gathers facts related to HDDs

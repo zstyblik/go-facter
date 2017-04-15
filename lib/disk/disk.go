@@ -44,8 +44,9 @@ func getBlockDevices(all bool) ([]string, error) {
 // getBlockDeviceModel returns model of block device as reported by Linux
 // kernel.
 func getBlockDeviceModel(blockDevice string) (string, error) {
-	model, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/device/model",
-		blockDevice))
+	modelFilename := fmt.Sprintf("%s/block/%s/device/model",
+		common.GetHostSys(), blockDevice)
+	model, err := ioutil.ReadFile(modelFilename)
 	if err != nil {
 		return "", err
 	}
@@ -55,8 +56,9 @@ func getBlockDeviceModel(blockDevice string) (string, error) {
 // getBlockDeviceSize returns size of block device as reported by Linux kernel
 // multiplied by 512.
 func getBlockDeviceSize(blockDevice string) (int64, error) {
-	size, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/size",
-		blockDevice))
+	sizeFilename := fmt.Sprintf("%s/block/%s/size", common.GetHostSys(),
+		blockDevice)
+	size, err := ioutil.ReadFile(sizeFilename)
 	if err != nil {
 		return 0, err
 	}
@@ -71,8 +73,9 @@ func getBlockDeviceSize(blockDevice string) (int64, error) {
 // getBlockDeviceVendor returns vendor of block device as reported by Linux
 // kernel.
 func getBlockDeviceVendor(blockDevice string) (string, error) {
-	vendor, err := ioutil.ReadFile(fmt.Sprintf("/sys/block/%s/device/vendor",
-		blockDevice))
+	vendorFilename := fmt.Sprintf("%s/block/%s/device/vendor",
+		common.GetHostSys(), blockDevice)
+	vendor, err := ioutil.ReadFile(vendorFilename)
 	if err != nil {
 		return "", err
 	}

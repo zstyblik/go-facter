@@ -1,8 +1,10 @@
 package host
 
 import (
+	"bytes"
 	"fmt"
 	"os"
+	"os/exec"
 	"os/user"
 	"strings"
 	"syscall"
@@ -24,6 +26,18 @@ func capitalize(label string) string {
 	}
 	return fmt.Sprintf("%v%v", strings.ToUpper(firstLetter[0]),
 		strings.TrimPrefix(label, firstLetter[0]))
+}
+
+// getUniqueID returns executes % hostid; and returns its STDOUT as a string.
+func getUniqueID() (string, error) {
+	cmd := exec.Command("/usr/bin/hostid")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimRight(out.String(), "\n"), nil
 }
 
 // guessArch tries to guess architecture based on HW model
@@ -120,5 +134,9 @@ func GetHostFacts(f Facter) error {
 	z, _ := time.Now().Zone()
 	f.Add("timezone", z)
 
+	hostid, err := getUniqueID()
+	if err == nil {
+		f.Add("uniqueid", hostid)
+	}
 	return nil
 }

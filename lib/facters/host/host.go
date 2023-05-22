@@ -73,7 +73,7 @@ func int8ToString(bs [65]int8) string {
 }
 
 // GetHostFacts gathers facts related to Host
-func GetHostFacts(f Facter) error {
+func GetHostFacts(f facter.IFacter) error {
 	hostInfo, err := h.Info()
 	if err != nil {
 		return err

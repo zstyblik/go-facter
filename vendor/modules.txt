@@ -1,0 +1,21 @@
+# github.com/StackExchange/wmi v0.0.0-20150520194626-f3e2bae1e0cb
+## explicit
+github.com/StackExchange/wmi
+# github.com/go-ole/go-ole v1.2.1-0.20160311030626-572eabb84c42
+## explicit
+github.com/go-ole/go-ole
+github.com/go-ole/go-ole/oleutil
+# github.com/shirou/gopsutil v2.0.1-0.20160614092826-22a03b5be3f3+incompatible
+## explicit
+github.com/shirou/gopsutil/cpu
+github.com/shirou/gopsutil/disk
+github.com/shirou/gopsutil/host
+github.com/shirou/gopsutil/internal/common
+github.com/shirou/gopsutil/mem
+github.com/shirou/gopsutil/net
+github.com/shirou/gopsutil/process
+# github.com/shirou/w32 v0.0.0-20160204003529-3c9377fc6748
+## explicit
+github.com/shirou/w32
+# github.com/stretchr/testify v1.8.3
+## explicit; go 1.20

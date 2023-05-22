@@ -10,12 +10,17 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/KittenConnect/go-facter/lib/facter"
 	h "github.com/shirou/gopsutil/host"
 )
 
-// Facter interface
-type Facter interface {
-	Add(string, interface{})
+var pluginName = "host"
+
+func init() {
+	err := facter.Register(pluginName, GetHostFacts)
+	if err != nil {
+		fmt.Printf("Cannot register Facter %s : %s\n", pluginName, err)
+	}
 }
 
 // capitalize the first letter of given string

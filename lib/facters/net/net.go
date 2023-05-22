@@ -7,21 +7,25 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/KittenConnect/go-facter/lib/facter"
+	"github.com/KittenConnect/go-facter/lib/facters/common"
 	n "github.com/shirou/gopsutil/net"
-	"github.com/zstyblik/go-facter/lib/common"
 )
 
 var (
-	reIPv4 = regexp.MustCompile("^[0-9]+\\.")
+	pluginName = "net"
+	reIPv4     = regexp.MustCompile("^[0-9]+\\.")
 )
 
-// Facter interface
-type Facter interface {
-	Add(string, interface{})
+func init() {
+	err := facter.Register(pluginName, GetNetFacts)
+	if err != nil {
+		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
+	}
 }
 
 // GetNetFacts gathers network related facts
-func GetNetFacts(f Facter) error {
+func GetNetFacts(f facter.IFacter) error {
 	netIfaces, err := n.Interfaces()
 	if err != nil {
 		return err

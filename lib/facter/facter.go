@@ -1,15 +1,23 @@
 package facter
 
 import (
-	"github.com/zstyblik/go-facter/lib/formatter"
+	"fmt"
+
+	"github.com/KittenConnect/go-facter/lib/formatter"
 )
 
-type FetcherFunc func(Facter) error
+type FetcherFunc func(IFacter) error
 
 var fetchers = make(map[string]FetcherFunc, 0)
 
+// IFacter interface
+type IFacter interface {
+	Add(string, interface{})
+}
+
 // Facter struct holds Facter-related attributes
 type Facter struct {
+	IFacter
 	facts     map[string]interface{}
 	formatter Formatter
 }
@@ -26,7 +34,12 @@ type Formatter interface {
 
 // Register a new facter Fetcher function
 func Register(name string, f FetcherFunc) error {
-	fetchers[k] = f
+	value, ok := fetchers[name]
+	if ok {
+		return fmt.Errorf("Facter Provider %s already defined : %v", name, value)
+	}
+	fetchers[name] = f
+	return nil
 }
 
 // New returns new instance of Facter
@@ -48,11 +61,11 @@ func New(userConf *Config) *Facter {
 }
 
 // Add adds a fact
-func (f *Facter) Fetch() (f *Facter) {
-	for name, fetcher := range fetchers {
+func (f *Facter) Fetch() *Facter {
+	for _, fetcher := range fetchers {
 		fetcher(f)
 	}
-	return
+	return f
 }
 
 // Add adds a fact

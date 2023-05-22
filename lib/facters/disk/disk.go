@@ -9,17 +9,21 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/KittenConnect/go-facter/lib/facter"
+	"github.com/KittenConnect/go-facter/lib/facters/common"
 	d "github.com/shirou/gopsutil/disk"
-	"github.com/zstyblik/go-facter/lib/common"
 )
 
 var (
+	pluginName     = "disk"
 	reDevBlacklist = regexp.MustCompile("^(dm-[0-9]+|loop[0-9]+)$")
 )
 
-// Facter interface
-type Facter interface {
-	Add(string, interface{})
+func init() {
+	err := facter.Register(pluginName, GetDiskFacts)
+	if err != nil {
+		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
+	}
 }
 
 // getBlockDevices returns list of block devices
@@ -85,7 +89,7 @@ func getBlockDeviceVendor(blockDevice string) (string, error) {
 }
 
 // GetDiskFacts gathers facts related to HDDs
-func GetDiskFacts(f Facter) error {
+func GetDiskFacts(f facter.IFacter) error {
 	partitions, err := d.Partitions(false)
 	if err != nil {
 		return err

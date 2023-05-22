@@ -1,0 +1,13 @@
+github.com/StackExchange/wmi v0.0.0-20150520194626-f3e2bae1e0cb h1:DkaUUcxmj7OTQhJdv5RvFkzI8jiaQT6LMSDLwAYp96E=
+github.com/StackExchange/wmi v0.0.0-20150520194626-f3e2bae1e0cb/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/go-ole/go-ole v1.2.1-0.20160311030626-572eabb84c42 h1:OuvTaLJ4l+6KSaPc4QPzIS7JCgeBWEOUYFOCGaOBei0=
+github.com/go-ole/go-ole v1.2.1-0.20160311030626-572eabb84c42/go.mod h1:7FAglXiTm7HKlQRDeOQ6ZNUHidzCWXuZWq/1dTyBNF8=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/shirou/gopsutil v2.0.1-0.20160614092826-22a03b5be3f3+incompatible h1:IWd7gvZ/boLBFxyAEix6pdZVfgeYkCDvhxMkgHqXdD8=
+github.com/shirou/gopsutil v2.0.1-0.20160614092826-22a03b5be3f3+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
+github.com/shirou/w32 v0.0.0-20160204003529-3c9377fc6748 h1:Bx+fmnIzqhuWJ+oO07K7SExRIWNKkU7AFaqG0s7f0b0=
+github.com/shirou/w32 v0.0.0-20160204003529-3c9377fc6748/go.mod h1:qsXQc7+bwAM3Q1u/4XEfrquwF8Lw7D7y5cD8CuHnfIc=
+github.com/stretchr/testify v1.8.3 h1:RP3t2pwF7cMEbC1dqtB6poj3niw/9gnV4Cjg5oW5gtY=
+github.com/stretchr/testify v1.8.3/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=

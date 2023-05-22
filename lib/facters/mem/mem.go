@@ -3,17 +3,22 @@ package mem
 import (
 	"fmt"
 
+	"github.com/KittenConnect/go-facter/lib/facter"
+	"github.com/KittenConnect/go-facter/lib/facters/common"
 	m "github.com/shirou/gopsutil/mem"
-	"github.com/zstyblik/go-facter/lib/common"
 )
 
-// Facter interface
-type Facter interface {
-	Add(string, interface{})
+var pluginName = "mem"
+
+func init() {
+	err := facter.Register(pluginName, GetMemoryFacts)
+	if err != nil {
+		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
+	}
 }
 
 // addMemoryUnits will convert a memory fact into "fact_mb" and "fact_bytes"
-func addMemoryUnits(f Facter, label string, memory uint64) error {
+func addMemoryUnits(f facter.IFacter, label string, memory uint64) error {
 	units := map[string]string{
 		"MB": "mb",
 		"B":  "bytes",
@@ -33,7 +38,7 @@ func addMemoryUnits(f Facter, label string, memory uint64) error {
 }
 
 // GetMemoryFacts gathers facts related to system memory
-func GetMemoryFacts(f Facter) error {
+func GetMemoryFacts(f facter.IFacter) error {
 	// Get the virtual memory from gopsutil
 	hostVMem, err := m.VirtualMemory()
 	if err != nil {

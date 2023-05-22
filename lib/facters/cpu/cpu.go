@@ -4,16 +4,22 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/KittenConnect/go-facter/lib/facter"
+
 	c "github.com/shirou/gopsutil/cpu"
 )
 
-// Facter interface
-type Facter interface {
-	Add(string, interface{})
+var pluginName = "cpu"
+
+func init() {
+	err := facter.Register(pluginName, GetCPUFacts)
+	if err != nil {
+		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
+	}
 }
 
 // GetCPUFacts gathers facts related to CPU
-func GetCPUFacts(f Facter) error {
+func GetCPUFacts(f facter.IFacter) error {
 	totalCount, err := c.Counts(true)
 	if err != nil {
 		return err

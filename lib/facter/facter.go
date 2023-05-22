@@ -4,6 +4,10 @@ import (
 	"github.com/zstyblik/go-facter/lib/formatter"
 )
 
+type FetcherFunc func(Facter) error
+
+var fetchers = make(map[string]FetcherFunc, 0)
+
 // Facter struct holds Facter-related attributes
 type Facter struct {
 	facts     map[string]interface{}
@@ -20,6 +24,11 @@ type Formatter interface {
 	Print(map[string]interface{}) error
 }
 
+// Register a new facter Fetcher function
+func Register(name string, f FetcherFunc) error {
+	fetchers[k] = f
+}
+
 // New returns new instance of Facter
 func New(userConf *Config) *Facter {
 	var conf *Config
@@ -34,7 +43,16 @@ func New(userConf *Config) *Facter {
 		facts:     make(map[string]interface{}),
 		formatter: conf.Formatter,
 	}
+	f.Fetch()
 	return f
+}
+
+// Add adds a fact
+func (f *Facter) Fetch() (f *Facter) {
+	for name, fetcher := range fetchers {
+		fetcher(f)
+	}
+	return
 }
 
 // Add adds a fact

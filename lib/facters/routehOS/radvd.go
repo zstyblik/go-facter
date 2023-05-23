@@ -26,12 +26,11 @@ func GetRADVDFacts(f facter.IFacter) error {
 	out := string(output)
 	debug("RADVD => %s\n", out)
 
-	debug("RADVDConfig => %v\n", reRADVDConfig.FindStringSubmatch(out))
-	debug("RADVDPidFile => %v\n", reRADVDPidFile.FindStringSubmatch(out))
-	debug("RADVDLogFile => %v\n", reRADVDLogFile.FindStringSubmatch(out))
-	debug("RADVDSyslogFc => %v\n", reRADVDSyslogFc.FindStringSubmatch(out))
-
-	f.Add("radvd_version", reRADVDVersion.FindStringSubmatch(string(output))[1])
+	f.Add("radvd_version", reRADVDVersion.FindStringSubmatch(out)[1])
+	f.Add("radvd_conf_file", reRADVDConfig.FindStringSubmatch(out)[1])
+	f.Add("radvd_pid_file", reRADVDPidFile.FindStringSubmatch(out)[1])
+	f.Add("radvd_log_file", reRADVDLogFile.FindStringSubmatch(out)[1])
+	f.Add("radvd_log_facility", reRADVDSyslogFc.FindStringSubmatch(out)[1])
 
 	return nil
 }

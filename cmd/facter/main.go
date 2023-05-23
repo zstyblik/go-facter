@@ -28,14 +28,9 @@ func main() {
 	} else if *yamlFormat == true {
 		conf.Formatter = formatter.NewYAMLFormatter()
 	} else {
-		conf.Formatter = formatter.NewFormatter()
+		conf.Formatter = formatter.NewJSONFormatter()
 	}
 
 	facter := facter.New(&conf)
-	// _ = cpu.GetCPUFacts(facter)
-	// _ = disk.GetDiskFacts(facter)
-	// _ = host.GetHostFacts(facter)
-	// _ = mem.GetMemoryFacts(facter)
-	// _ = net.GetNetFacts(facter)
 	facter.Print()
 }

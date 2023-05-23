@@ -39,7 +39,16 @@ func GetAllFacts(f facter.IFacter) (e error) {
 
 // GetFacts gathers facts related to KittenConnect's RoutehOS Appliance
 func GetFacts(f facter.IFacter) error {
-	f.Add("foo", "bar")
+	f.Add("foo", map[string]interface{}{
+		"version": "1.0.2",
+		"bar":     "dfjkgdfgdfg",
+		"baz":     "dfkgnldgdfsg",
+		"test":    "gfdsgdfsgdsg",
+		"tos":     "dfjkngbkdfngdfs",
+		"toz": map[string]interface{}{
+			"beep": "boop",
+		},
+	})
 
 	return nil
 }

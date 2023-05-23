@@ -14,7 +14,7 @@ func GetRADVDFacts(f facter.IFacter) error {
 
 	// Run the command and retrieve the output
 	output, err := cmd.CombinedOutput()
-	if err != nil {
+	if err != nil && cmd.ProcessState.ExitCode() != 1 {
 		return err
 	}
 

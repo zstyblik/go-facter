@@ -12,10 +12,7 @@ import (
 var pluginName = "cpu"
 
 func init() {
-	err := facter.Register(pluginName, GetCPUFacts)
-	if err != nil {
-		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
-	}
+	facter.RegisterSafe(pluginName, []string{"processorcount", "physicalprocessorcount", "processor_"}, GetCPUFacts)
 }
 
 // GetCPUFacts gathers facts related to CPU

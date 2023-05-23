@@ -18,10 +18,7 @@ var (
 )
 
 func init() {
-	err := facter.Register(pluginName, GetNetFacts)
-	if err != nil {
-		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
-	}
+	facter.RegisterSafe(pluginName, []string{"interfaces", "macaddress_", "ipaddress_", "ipaddress6_", "netmask_", "mtu_"}, GetNetFacts)
 }
 
 // GetNetFacts gathers network related facts

@@ -17,10 +17,7 @@ import (
 var pluginName = "host"
 
 func init() {
-	err := facter.Register(pluginName, GetHostFacts)
-	if err != nil {
-		fmt.Printf("Cannot register Facter %s : %s\n", pluginName, err)
-	}
+	facter.Register(pluginName, GetHostFacts)
 }
 
 // capitalize the first letter of given string

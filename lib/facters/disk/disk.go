@@ -20,10 +20,7 @@ var (
 )
 
 func init() {
-	err := facter.Register(pluginName, GetDiskFacts)
-	if err != nil {
-		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
-	}
+	facter.RegisterSafe(pluginName, []string{"filesystems", "blockdevices", "blockdevice_"}, GetDiskFacts)
 }
 
 // getBlockDevices returns list of block devices

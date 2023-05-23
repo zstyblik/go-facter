@@ -16,6 +16,8 @@ func main() {
 		"Emit facts as key:value pairs")
 	jsonFormat := flag.Bool("json", false,
 		"Emit facts as a JSON")
+	yamlFormat := flag.Bool("yaml", false,
+		"Emit facts as a JSON")
 	flag.Parse()
 
 	if *ptFormat == true {
@@ -24,6 +26,8 @@ func main() {
 		conf.Formatter = formatter.NewKeyValueFormatter()
 	} else if *jsonFormat == true {
 		conf.Formatter = formatter.NewJSONFormatter()
+	} else if *yamlFormat == true {
+		conf.Formatter = formatter.NewYAMLFormatter()
 	} else {
 		conf.Formatter = formatter.NewFormatter()
 	}

@@ -11,10 +11,8 @@ import (
 var pluginName = "mem"
 
 func init() {
-	err := facter.Register(pluginName, GetMemoryFacts)
-	if err != nil {
-		fmt.Printf("Cannot register Facter %s : %v\n", pluginName, err)
-	}
+	facter.Register(pluginName, GetMemoryFacts)
+	// facter.RegisterSafe(pluginName, []string{"memoryfree_", "memorysize_", "swapfree_", "swapsize_"}, GetMemoryFacts)
 }
 
 // addMemoryUnits will convert a memory fact into "fact_mb" and "fact_bytes"

@@ -20,9 +20,11 @@ func GetAllFacts(f facter.IFacter) (e error) {
 	for _, fetcherFunc := range fetcherFuncs {
 		err := fetcherFunc(f)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "go-facter/lib/kitten-routehOS(%T) failed: %s\n", fetcherFunc, err)
+			fmt.Fprintf(os.Stderr, "go-facter/routehOS(%s) failed: %s\n", fetcherFunc.Describe(), err)
 			e = err
+			continue
 		}
+		fmt.Fprintf(os.Stderr, "go-facter/routehOS(%s) fetched\n", fetcherFunc.Describe())
 	}
 	return
 }

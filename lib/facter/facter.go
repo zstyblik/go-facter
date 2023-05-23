@@ -38,16 +38,22 @@ type Formatter interface {
 	Print(map[string]interface{}) error
 }
 
+// Describe return function's "FQDN"
 func describeFunc(i interface{}) string {
 	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+}
+
+// Describe return function's "FQDN"
+func (f FetcherFunc) Describe() string {
+	return runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
 }
 
 // Register a new facter Fetcher function
 func Register(name string, f FetcherFunc) (err error) {
 	value, ok := fetchers[name]
 	if ok {
-		err = fmt.Errorf("go-facter provider %s already defined as -> %s", name, describeFunc(value))
-		fmt.Fprintf(os.Stderr, "%s(%s) failed for reason : %s\n", describeFunc(Register), describeFunc(f), err)
+		err = fmt.Errorf("go-facter provider %s already defined as -> %s", name, value.Describe())
+		fmt.Fprintf(os.Stderr, "%s(%s) failed for reason : %s\n", describeFunc(Register), f.Describe(), err)
 		return
 	}
 

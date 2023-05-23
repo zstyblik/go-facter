@@ -3,7 +3,6 @@ package routehOS
 import (
 	"os/exec"
 	"regexp"
-	"strings"
 
 	"github.com/KittenConnect/go-facter/lib/facter"
 )
@@ -24,7 +23,7 @@ func GetBirdFacts(f facter.IFacter) error {
 	debug("%v", result)
 
 	if len(result) > 0 {
-		f.Add("bird_version", strings.Join(result, " "))
+		f.Add("bird_version", result[1])
 	}
 
 	return nil

@@ -107,7 +107,7 @@ func New(userConf *Config) *Facter {
 	return f
 }
 
-// Add adds a fact
+// Fetch adds all facts to cache using registered Fetchers
 func (f *Facter) Fetch() *Facter {
 	for _, fetcher := range fetchers {
 		err := fetcher(f)
@@ -120,6 +120,10 @@ func (f *Facter) Fetch() *Facter {
 
 // Add adds a fact
 func (f *Facter) Add(k string, v interface{}) {
+	value, ok := f.Get(k)
+	if ok {
+		fmt.Fprintf(os.Stderr, "%s(%s, %v) facter already defined as %v overriding its value, please consider upgrading your facter registration to avoid facters overlapping\n", describeFunc(f.Add), k, v, value)
+	}
 	f.facts[k] = v
 }
 

@@ -18,6 +18,7 @@ func GetBirdFacts(f facter.IFacter) error {
 	if err != nil {
 		return err
 	}
+	f.Add("bird_version_stdout", string(output))
 
 	result := reBirdVersion.FindStringSubmatch(string(output))
 

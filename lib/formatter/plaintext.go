@@ -17,7 +17,7 @@ func NewFormatter() *PlainTextFormatter {
 
 func isMap(x interface{}) bool {
 	t := fmt.Sprintf("%T", x)
-	return strings.HasPrefix(t, "map[string]")
+	return strings.HasPrefix(t, "map[")
 }
 
 // Print prints-out facts in k=>v format

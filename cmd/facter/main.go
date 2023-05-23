@@ -5,7 +5,6 @@ import (
 
 	"github.com/KittenConnect/go-facter/lib/facter"
 	"github.com/KittenConnect/go-facter/lib/formatter"
-	// "github.com/KittenConnect/go-facter/lib/formatter"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 	jsonFormat := flag.Bool("json", false,
 		"Emit facts as a JSON")
 	yamlFormat := flag.Bool("yaml", false,
-		"Emit facts as a JSON")
+		"Emit facts as a YAML")
 	flag.Parse()
 
 	if *ptFormat == true {

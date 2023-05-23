@@ -15,16 +15,20 @@ func init() {
 	facter.RegisterSafe(PluginName, []string{"foo", "bird_"}, GetAllFacts)
 }
 
+func debug(f string, v ...any) {
+	fmt.Fprintf(os.Stderr, f, v...)
+}
+
 // GetAllFacts gathers all facts related to KittenConnect's RoutehOS Appliance
 func GetAllFacts(f facter.IFacter) (e error) {
 	for _, fetcherFunc := range fetcherFuncs {
 		err := fetcherFunc(f)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "go-facter/routehOS(%s) failed: %s\n", fetcherFunc.Describe(), err)
+			debug("go-facter/routehOS(%s) failed: %s\n", fetcherFunc.Describe(), err)
 			e = err
 			continue
 		}
-		fmt.Fprintf(os.Stderr, "go-facter/routehOS(%s) fetched\n", fetcherFunc.Describe())
+		debug("go-facter/routehOS(%s) fetched\n", fetcherFunc.Describe())
 	}
 	return
 }

@@ -52,6 +52,7 @@ func Register(name string, f FetcherFunc) (err error) {
 	}
 
 	fetchers[name] = f
+	fmt.Fprintf(os.Stderr, "%s(%s) unsafe, please consider upgrading your facter registration to avoid facters overlapping\n", describeFunc(Register), describeFunc(f))
 	return nil
 }
 
@@ -62,7 +63,7 @@ func RegisterSafe(name string, facts []string, f FetcherFunc) (err error) {
 		fetcher, ok := registeredFacts[name]
 		if ok {
 			err = fmt.Errorf("go-facter facter %s already defined as -> %s", fact, describeFunc(fetchers[fetcher]))
-			fmt.Fprintf(os.Stderr, "%s(%s) failed for reason : %s\n", describeFunc(Register), describeFunc(f), err)
+			fmt.Fprintf(os.Stderr, "%s(%s) failed for reason : %s\n", describeFunc(RegisterSafe), describeFunc(f), err)
 			return
 		}
 

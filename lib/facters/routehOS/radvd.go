@@ -24,7 +24,7 @@ func GetRADVDFacts(f facter.IFacter) error {
 	}
 
 	out := string(output)
-	debug("RADVD => %s\n", out)
+	// debug("RADVD => %s\n", out)
 
 	f.Add("radvd_version", reRADVDVersion.FindStringSubmatch(out)[1])
 	f.Add("radvd_conf_file", reRADVDConfig.FindStringSubmatch(out)[1])

@@ -9,10 +9,10 @@ import (
 
 var reRADVDVersion = regexp.MustCompile(`Version: ([\d\.]+)`)
 
-var reRADVDConfig = regexp.MustCompile(`\s+default\s+config\s+file\s+"(\w+)"`)
-var reRADVDPidFile = regexp.MustCompile(`\s+default\s+pidfile\s+"(\w+)"`)
-var reRADVDLogFile = regexp.MustCompile(`\s+default\s+logfile\s+"(\w+)"`)
-var reRADVDSyslogFc = regexp.MustCompile(`\s+default\s+syslog\s+facility\s+(\d+)`)
+var reRADVDConfig = regexp.MustCompile(`default[\s]+config[\s]+file[\s]+"(\w+)"`)
+var reRADVDPidFile = regexp.MustCompile(`default[\s]+pidfile[\s]+"(\w+)"`)
+var reRADVDLogFile = regexp.MustCompile(`default[\s]+logfile[\s]+"(\w+)"`)
+var reRADVDSyslogFc = regexp.MustCompile(`default[\s]+syslog[\s]+facility\s+(\d+)`)
 
 func GetRADVDFacts(f facter.IFacter) error {
 	cmd := exec.Command("radvd", "--version")
@@ -23,10 +23,13 @@ func GetRADVDFacts(f facter.IFacter) error {
 		return err
 	}
 
-	debug("RADVD => %v", reRADVDConfig.FindStringSubmatch(string(output)))
-	debug("RADVD => %v", reRADVDPidFile.FindStringSubmatch(string(output)))
-	debug("RADVD => %v", reRADVDLogFile.FindStringSubmatch(string(output)))
-	debug("RADVD => %v", reRADVDSyslogFc.FindStringSubmatch(string(output)))
+	out := string(output)
+	debug("RADVD => %s\n", out)
+
+	debug("RADVDConfig => %v\n", reRADVDConfig.FindStringSubmatch(out))
+	debug("RADVDPidFile => %v\n", reRADVDPidFile.FindStringSubmatch(out))
+	debug("RADVDLogFile => %v\n", reRADVDLogFile.FindStringSubmatch(out))
+	debug("RADVDSyslogFc => %v\n", reRADVDSyslogFc.FindStringSubmatch(out))
 
 	f.Add("radvd_version", reRADVDVersion.FindStringSubmatch(string(output))[1])
 

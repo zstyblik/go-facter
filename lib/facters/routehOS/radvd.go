@@ -9,9 +9,9 @@ import (
 
 var reRADVDVersion = regexp.MustCompile(`Version: ([\d\.]+)`)
 
-var reRADVDConfig = regexp.MustCompile(`default[\s]+config[\s]+file[\s]+"(\w+)"`)
-var reRADVDPidFile = regexp.MustCompile(`default[\s]+pidfile[\s]+"(\w+)"`)
-var reRADVDLogFile = regexp.MustCompile(`default[\s]+logfile[\s]+"(\w+)"`)
+var reRADVDConfig = regexp.MustCompile(`default[\s]+config[\s]+file[\s]+"([\/-_.\w]+)"`)
+var reRADVDPidFile = regexp.MustCompile(`default[\s]+pidfile[\s]+"([\/-_.\w]+)"`)
+var reRADVDLogFile = regexp.MustCompile(`default[\s]+logfile[\s]+"([\/-_.\w]+)"`)
 var reRADVDSyslogFc = regexp.MustCompile(`default[\s]+syslog[\s]+facility[\s]+(\d+)`)
 
 func GetRADVDFacts(f facter.IFacter) error {

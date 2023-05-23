@@ -39,5 +39,13 @@ func GetRADVDFacts(f facter.IFacter) error {
 	f.Add("radvd_log_file", reRADVDLogFile.FindStringSubmatch(out)[1])
 	f.Add("radvd_log_facility", reRADVDSyslogFc.FindStringSubmatch(out)[1])
 
+	f.Add("radvd", map[string]interface{}{
+		"version":      result[1],
+		"conf_file":    reRADVDConfig.FindStringSubmatch(out)[1],
+		"pid_file":     reRADVDPidFile.FindStringSubmatch(out)[1],
+		"log_file":     reRADVDLogFile.FindStringSubmatch(out)[1],
+		"log_facility": reRADVDSyslogFc.FindStringSubmatch(out)[1],
+	})
+
 	return nil
 }

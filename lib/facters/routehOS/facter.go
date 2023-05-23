@@ -16,7 +16,7 @@ var fetcherFuncs = []facter.FetcherFunc{
 }
 
 func init() {
-	facter.RegisterSafe(PluginName, []string{"foo", "bird_", "radvd_"}, GetAllFacts)
+	facter.RegisterSafe(PluginName, []string{"foo", "bird_", "radvd", "radvd_"}, GetAllFacts)
 }
 
 func debug(f string, v ...any) {

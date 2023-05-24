@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/nqd/flat v0.2.0
+	github.com/peterbourgon/mergemap v0.0.1
 	github.com/shirou/gopsutil v2.0.1-0.20160614092826-22a03b5be3f3+incompatible
 	gopkg.in/yaml.v3 v3.0.1
 )

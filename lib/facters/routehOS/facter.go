@@ -10,13 +10,13 @@ import (
 var PluginName = "routehOS"
 
 var fetcherFuncs = []facter.FetcherFunc{
-	GetFacts,
-	GetRADVDFacts,
-	GetBirdFacts,
+	// GetFacts,
+	// GetRADVDFacts,
+	// GetBirdFacts,
 }
 
 func init() {
-	facter.RegisterSafe(PluginName, []string{"foo", "bird_", "radvd", "radvd_"}, GetAllFacts)
+	facter.RegisterSafe(PluginName, []string{}, GetAllFacts)
 }
 
 func debug(f string, v ...any) {
@@ -39,16 +39,15 @@ func GetAllFacts(f facter.IFacter) (e error) {
 
 // GetFacts gathers facts related to KittenConnect's RoutehOS Appliance
 func GetFacts(f facter.IFacter) error {
-	f.Add("foo", map[string]interface{}{
-		"version": "1.0.2",
-		"bar":     "dfjkgdfgdfg",
-		"baz":     "dfkgnldgdfsg",
-		"test":    "gfdsgdfsgdsg",
-		"tos":     "dfjkngbkdfngdfs",
-		"toz": map[string]interface{}{
-			"beep": "boop",
-		},
-	})
-
+	// f.Add("foo", map[string]interface{}{
+	// 	"version": "1.0.2",
+	// 	"bar":     "dfjkgdfgdfg",
+	// 	"baz":     "dfkgnldgdfsg",
+	// 	"test":    "gfdsgdfsgdsg",
+	// 	"tos":     "dfjkngbkdfngdfs",
+	// 	"toz": map[string]interface{}{
+	// 		"beep": "boop",
+	// 	},
+	// })
 	return nil
 }

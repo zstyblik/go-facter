@@ -7,8 +7,8 @@ import (
 	"runtime"
 
 	"github.com/KittenConnect/go-facter/lib/formatter"
-	"github.com/peterbourgon/mergemap"
 	"github.com/nqd/flat"
+	"github.com/peterbourgon/mergemap"
 )
 
 type FetcherFunc func(IFacter) error
@@ -68,7 +68,7 @@ func Register(name string, f FetcherFunc) (err error) {
 func RegisterSafe(name string, facts []string, f FetcherFunc) (err error) {
 	// Ensure multiple providers dont override same fact
 	for _, fact := range facts {
-		fetcher, ok := registeredFacts[name]
+		fetcher, ok := registeredFacts[fact]
 		if ok {
 			err = fmt.Errorf("go-facter facter %s already defined as -> %s", fact, describeFunc(fetchers[fetcher]))
 			fmt.Fprintf(os.Stderr, "%s(%s) failed for reason : %s\n", describeFunc(RegisterSafe), describeFunc(f), err)

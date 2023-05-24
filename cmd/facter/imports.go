@@ -5,5 +5,5 @@ import (
 	_ "github.com/KittenConnect/go-facter/lib/facters/mem"
 	_ "github.com/KittenConnect/go-facter/lib/facters/net"
 
-	_ "github.com/KittenConnect/go-facter/lib/facters/routehOS"
+	_ "github.com/KittenConnect/go-facter/lib/facters/routehOS/networking"
 )

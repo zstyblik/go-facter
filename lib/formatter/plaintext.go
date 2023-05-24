@@ -14,11 +14,6 @@ func NewFormatter() *PlainTextFormatter {
 	return &PlainTextFormatter{}
 }
 
-func isMap(x interface{}) bool {
-	t := fmt.Sprintf("%T", x)
-	return strings.HasPrefix(t, "map[")
-}
-
 // Print prints-out facts in k=>v format
 func (pf PlainTextFormatter) PrintIndent(facts map[string]interface{}, prefix, indent string) error {
 	var keys []string
@@ -28,7 +23,7 @@ func (pf PlainTextFormatter) PrintIndent(facts map[string]interface{}, prefix, i
 	sort.Strings(keys)
 	for _, k := range keys {
 		v := facts[k]
-		if isMap(v) {
+		if strings.HasPrefix(fmt.Sprintf("%T", v), "map[") {
 			fmt.Printf("%s%v => {\n", prefix, k)
 			pf.PrintIndent(v.(map[string]interface{}), prefix+indent, indent)
 			fmt.Printf("%s}\n", prefix)
@@ -48,7 +43,7 @@ func (pf PlainTextFormatter) Print(facts map[string]interface{}) error {
 	sort.Strings(keys)
 	for _, k := range keys {
 		v := facts[k]
-		if isMap(v) {
+		if strings.HasPrefix(fmt.Sprintf("%T", v), "map[") {
 			fmt.Printf("%v => {\n", k)
 			pf.PrintIndent(v.(map[string]interface{}), "  ", "  ")
 			fmt.Printf("}\n")

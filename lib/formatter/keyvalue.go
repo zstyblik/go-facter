@@ -3,6 +3,8 @@ package formatter
 import (
 	"fmt"
 	"sort"
+
+	"github.com/nqd/flat"
 )
 
 // KeyValueFormatter prints-out facts in k:v format
@@ -16,6 +18,10 @@ func NewKeyValueFormatter() *KeyValueFormatter {
 
 // Print prints-out facts in k:v format
 func (kvf KeyValueFormatter) Print(facts map[string]interface{}) error {
+	facts, err := flat.Flatten(facts, nil)
+	if err != nil {
+		return err
+	}
 	var keys []string
 	for k := range facts {
 		keys = append(keys, k)

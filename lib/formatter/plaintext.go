@@ -8,11 +8,14 @@ import (
 
 // PlainTextFormatter prints-out facts in k=>v format
 type PlainTextFormatter struct {
+	// indent bool
 }
 
 // NewFormatter returns new plain-text formatter
 func NewFormatter() *PlainTextFormatter {
-	return &PlainTextFormatter{}
+	return &PlainTextFormatter{
+		// indent: false,
+	}
 }
 
 func isMap(x interface{}) bool {
@@ -50,9 +53,15 @@ func (pf PlainTextFormatter) Print(facts map[string]interface{}) error {
 	for _, k := range keys {
 		v := facts[k]
 		if isMap(v) {
+			// if pf.indent {
 			fmt.Printf("%v => {\n", k)
 			pf.PrintIndent(v.(map[string]interface{}), "  ", "  ")
 			fmt.Printf("}\n")
+			// } else {
+			// 	fmt.Printf("%v => { ", k)
+			// 	pf.Print(v.(map[string]interface{}))
+			// 	fmt.Printf(" }")
+			// }
 		} else {
 			fmt.Printf("%v => %v\n", k, v)
 		}

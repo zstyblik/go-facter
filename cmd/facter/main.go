@@ -9,8 +9,8 @@ import (
 
 func main() {
 	conf := facter.Config{}
-	ptFormat := flag.Bool("plaintext", false,
-		"Emit facts as key => value pairs")
+	// ptFormat := flag.Bool("plaintext", false,
+	// 	"Emit facts as key => value pairs")
 	kvFormat := flag.Bool("keyvalue", false,
 		"Emit facts as key:value pairs")
 	jsonFormat := flag.Bool("json", false,
@@ -19,16 +19,17 @@ func main() {
 		"Emit facts as a YAML")
 	flag.Parse()
 
-	if *ptFormat == true {
-		conf.Formatter = formatter.NewFormatter()
-	} else if *kvFormat == true {
+	// if *ptFormat == true {
+	// 	conf.Formatter = formatter.NewFormatter()
+	// } else
+	if *kvFormat == true {
 		conf.Formatter = formatter.NewKeyValueFormatter()
 	} else if *jsonFormat == true {
 		conf.Formatter = formatter.NewJSONFormatter()
 	} else if *yamlFormat == true {
 		conf.Formatter = formatter.NewYAMLFormatter()
 	} else {
-		conf.Formatter = formatter.NewJSONFormatter()
+		conf.Formatter = formatter.NewFormatter()
 	}
 
 	facter := facter.New(&conf)

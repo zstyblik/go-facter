@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/KittenConnect/go-facter/lib/formatter"
+	"github.com/peterbourgon/mergemap"
 )
 
 type FetcherFunc func(IFacter) error
@@ -115,6 +116,18 @@ func (f *Facter) Fetch() *Facter {
 			fmt.Fprintf(os.Stderr, "%s() failed for reason : %s\n", describeFunc(fetcher), err)
 		}
 	}
+	// Flatten Facters
+	flatFacts, err := flat.Flatten(facts, nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s() failed for reason : %s\n", describeFunc(flat.Flatten), err)
+	}
+
+	merged, err	:= mergemap.Merge(f.facts, flatFacts)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s() failed for reason : %s\n", describeFunc(mergemap.Merge), err)
+	} else {
+		f.facts = merged
+	}
 	return f
 }
 
@@ -134,11 +147,11 @@ func (f *Facter) Delete(k string) {
 
 // Get returns value of given fact, if it exists
 func (f *Facter) Get(k string) (interface{}, bool) {
-	value, ok := f.facts[k]
+	value, ok := f.flatFacts[k]
 	return value, ok
 }
 
 // Print prints-out facts by calling formatter
 func (f *Facter) Print() {
-	f.formatter.Print(f.facts)
+	f.formatter.Print(f.flatFacts)
 }

@@ -4,9 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	
+
 	"github.com/KittenConnect/go-facter/lib/facter"
 	"github.com/KittenConnect/go-facter/lib/formatter"
+
+	_ "github.com/KittenConnect/go-facter/lib/facters/routehOS"
 )
 
 func main() {
@@ -24,11 +26,11 @@ func main() {
 	// if *ptFormat == true {
 	// 	conf.Formatter = formatter.NewFormatter()
 	// } else
-	if *kvFormat == true {
+	if *kvFormat {
 		conf.Formatter = formatter.NewKeyValueFormatter()
-	} else if *jsonFormat == true {
+	} else if *jsonFormat {
 		conf.Formatter = formatter.NewJSONFormatter()
-	} else if *yamlFormat == true {
+	} else if *yamlFormat {
 		conf.Formatter = formatter.NewYAMLFormatter()
 	} else {
 		conf.Formatter = formatter.NewFormatter()

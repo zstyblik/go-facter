@@ -10,13 +10,13 @@ import (
 var PluginName = "routehOS"
 
 var fetcherFuncs = []facter.FetcherFunc{
-	GetFacts,
+	// GetFacts,
 	// GetRADVDFacts,
 	// GetBirdFacts,
 }
 
 func init() {
-	facter.RegisterSafe(PluginName, []string{"bird.", "radvd."}, GetAllFacts)
+	facter.RegisterSafe(PluginName, []string{}, GetAllFacts)
 }
 
 func debug(f string, v ...any) {

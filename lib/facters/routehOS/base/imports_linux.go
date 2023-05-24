@@ -1,4 +1,4 @@
-package main
+package base
 
 import (
 	_ "github.com/KittenConnect/go-facter/lib/facters/cpu"

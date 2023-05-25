@@ -15,7 +15,7 @@ import (
 
 var (
 	pluginName = "net"
-	reIPv4     = regexp.MustCompile("^[0-9]+\\.")
+	reIPv4     = regexp.MustCompile(`^[0-9]+\.`)
 )
 
 func init() {
@@ -74,16 +74,18 @@ func GetNetFacts(f facter.IFacter) error {
 		// Check if IPv4 forwarding is enabled
 		ipv4Forwarding, err := readProcSysNet(fmt.Sprintf("ipv4/conf/%s/forwarding", ifName))
 		if err != nil {
-			return fmt.Errorf("failed to retrieve IPv4 forwarding status for interface %s: %w", ifName, err)
+			continue
+			// return fmt.Errorf("failed to retrieve IPv4 forwarding status for interface %s: %w", ifName, err)
 		}
-		f.Add(fmt.Sprintf("ipv4_forward_%s", ifName), ipv4Forwarding)
+		f.Add(fmt.Sprintf("ip_forward_%s", ifName), ipv4Forwarding)
 
 		// Check if IPv6 forwarding is enabled
 		ipv6Forwarding, err := readProcSysNet(fmt.Sprintf("ipv6/conf/%s/forwarding", ifName))
 		if err != nil {
-			return fmt.Errorf("failed to retrieve IPv6 forwarding status for interface %s: %w", ifName, err)
+			continue
+			// return fmt.Errorf("failed to retrieve IPv6 forwarding status for interface %s: %w", ifName, err)
 		}
-		f.Add(fmt.Sprintf("ipv6_forward_%s", ifName), ipv6Forwarding)
+		f.Add(fmt.Sprintf("ip6_forward_%s", ifName), ipv6Forwarding)
 	}
 
 	if len(ifaces) > 0 {

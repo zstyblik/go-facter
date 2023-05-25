@@ -40,33 +40,51 @@ func GetNetFacts(f facter.IFacter) error {
 		for _, ipAddr := range v.Addrs {
 			var labelIPAddr, labelNetmask string
 			isIPv4 := reIPv4.MatchString(ipAddr.Addr)
+			isFirstFound := false
+
+			var netmaskBits uint64
 
 			if isIPv4 {
 				labelIPAddr = fmt.Sprintf("ipaddress_%v", ifName)
 				labelNetmask = fmt.Sprintf("netmask_%v", ifName)
+
+				if addr4idx == 0 {
+					isFirstFound = true
+				}
 			} else {
 				labelIPAddr = fmt.Sprintf("ipaddress6_%v", ifName)
-			}
-
-			splitted := strings.Split(ipAddr.Addr, "/")
-			if len(splitted) > 0 {
-				f.Add(labelIPAddr, splitted[0])
-			}
-			if len(splitted) > 1 && isIPv4 {
-				netmaskBits, err := strconv.ParseUint(splitted[1], 10, 32)
-				if err == nil {
-					netmaskStr, err := common.ConvertNetmask(uint8(netmaskBits))
-					if err == nil {
-						f.Add(labelNetmask, netmaskStr)
-					}
+				if addr6idx == 0 {
+					isFirstFound = true
 				}
 			}
 
+			splitted := strings.Split(ipAddr.Addr, "/")
+			if len(splitted) > 0 && isFirstFound {
+				f.Add(labelIPAddr, splitted[0])
+			}
+
 			if isIPv4 {
-				f.Add(fmt.Sprintf("ipaddress_%v_%d", ifName, addr4idx), splitted[0])
+				if len(splitted) > 1 {
+					netmaskBits, err = strconv.ParseUint(splitted[1], 10, 32)
+					if err == nil {
+						netmaskStr, err := common.ConvertNetmask(uint8(netmaskBits))
+						if err == nil {
+							if isFirstFound {
+								f.Add(labelNetmask, netmaskStr)
+							} else {
+								f.Add(fmt.Sprintf("%s_%d", labelNetmask, addr4idx), netmaskStr)
+							}
+						}
+					}
+				}
+				if !isFirstFound {
+					f.Add(fmt.Sprintf("%s_%d", labelIPAddr, addr4idx), splitted[0])
+				}
 				addr4idx++
 			} else {
-				f.Add(fmt.Sprintf("ipaddress6_%v_%d", ifName, addr6idx), splitted[0])
+				if !isFirstFound {
+					f.Add(fmt.Sprintf("%s_%d", labelIPAddr, addr6idx), splitted[0])
+				}
 				addr6idx++
 			}
 		}

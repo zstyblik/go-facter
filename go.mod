@@ -1,6 +1,6 @@
 module github.com/KittenConnect/go-facter
 
-go 1.20
+go 1.18
 
 require (
 	github.com/nqd/flat v0.2.0

@@ -2,6 +2,7 @@ package net
 
 import (
 	"fmt"
+	"io/ioutil"
 	"regexp"
 	"sort"
 	"strconv"
@@ -20,6 +21,7 @@ var (
 func init() {
 	facter.RegisterSafe(pluginName, []string{"interfaces", "macaddress_", "ipaddress_", "ipaddress6_", "netmask_", "mtu_", "ip_forward_", "ip6_forward_"}, GetNetFacts)
 }
+
 // GetNetFacts gathers network related facts
 func GetNetFacts(f facter.IFacter) error {
 	netIfaces, err := n.Interfaces()
@@ -94,7 +96,7 @@ func GetNetFacts(f facter.IFacter) error {
 
 // readProcSysNet reads the content of a file located in /proc/sys
 func readProcSysNet(path string) (string, error) {
-	content, err := ioutil.ReadFile(fmt.Sprintf("%s/sys/net/%s", common.GetHostProc() ,path))
+	content, err := ioutil.ReadFile(fmt.Sprintf("%s/sys/net/%s", common.GetHostProc(), path))
 	if err != nil {
 		return "", err
 	}

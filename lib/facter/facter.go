@@ -64,7 +64,7 @@ func Register(name string, f FetcherFunc) (err error) {
 	return nil
 }
 
-// RegisterSafe a new facter Fetcher function using safe methods
+// RegisterSafe a new facter Fetcher function using safe methods, declare all created facts in the facts array 
 func RegisterSafe(name string, facts []string, f FetcherFunc) (err error) {
 	// Ensure multiple providers dont override same fact
 	for _, fact := range facts {

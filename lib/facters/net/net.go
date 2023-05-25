@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	facter.RegisterSafe(pluginName, []string{"interfaces", "macaddress_", "ipaddress_", "ipaddress6_", "netmask_", "mtu_"}, GetNetFacts)
+	facter.RegisterSafe(pluginName, []string{"interfaces", "macaddress_", "ipaddress_", "ipaddress6_", "netmask_", "mtu_", "ip_forward_", "ip6_forward_"}, GetNetFacts)
 }
 
 // GetNetFacts gathers network related facts
@@ -77,11 +77,37 @@ func GetNetFacts(f facter.IFacter) error {
 				f.Add(labelNetmask, netmaskStr)
 			}
 		}
+
+		// Check if IPv4 forwarding is enabled
+		ipv4Forwarding, err := readProcSys(fmt.Sprintf("ipv4/conf/%s/forwarding", ifName))
+		if err != nil {
+			fmt.Printf("Failed to retrieve IPv4 forwarding status for interface %s: %s\n", ifName, err)
+			continue
+		}
+		f.Add(fmt.Sprintf("ip_forward_%s", ifName), ipv4Forwarding)
+
+		// Check if IPv6 forwarding is enabled
+		ipv6Forwarding, err := readProcSys(fmt.Sprintf("ipv6/conf/%s/forwarding", ifName))
+		if err != nil {
+			fmt.Printf("Failed to retrieve IPv6 forwarding status for interface %s: %s\n", ifName, err)
+			continue
+		}
+		f.Add(fmt.Sprintf("ip6_forward_%s", ifName), ipv6Forwarding)
 	}
+
 	if len(ifaces) > 0 {
 		sort.Strings(ifaces)
 		f.Add("interfaces", strings.Join(ifaces, ","))
 	}
 
 	return nil
+}
+
+// readProcSys reads the content of a file located in /proc/sys
+func readNet(path string) (string, error) {
+	content, err := ioutil.ReadFile(fmt.Sprintf("%s/sys/net/%s", common.GetHostProc() ,path))
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(content)), nil
 }

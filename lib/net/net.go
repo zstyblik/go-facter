@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	n "github.com/shirou/gopsutil/net"
+	n "github.com/shirou/gopsutil/v4/net"
 	"github.com/zstyblik/go-facter/lib/common"
 )
 

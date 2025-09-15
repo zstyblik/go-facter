@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	d "github.com/shirou/gopsutil/disk"
+	d "github.com/shirou/gopsutil/v4/disk"
 	"github.com/zstyblik/go-facter/lib/common"
 )
 

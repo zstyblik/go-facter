@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	c "github.com/shirou/gopsutil/cpu"
+	c "github.com/shirou/gopsutil/v4/cpu"
 )
 
 // Facter interface

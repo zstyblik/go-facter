@@ -7,10 +7,10 @@ import (
 	"os/exec"
 	"os/user"
 	"strings"
-	"syscall"
 	"time"
 
-	h "github.com/shirou/gopsutil/host"
+	h "github.com/shirou/gopsutil/v4/host"
+	"golang.org/x/sys/unix"
 )
 
 // Facter interface
@@ -52,19 +52,6 @@ func guessArch(HWModel string) string {
 		break
 	}
 	return arch
-}
-
-// int8ToString converts [65]int8 in syscall.Utsname to string
-func int8ToString(bs [65]int8) string {
-	b := make([]byte, len(bs))
-	for i, v := range bs {
-		if v < 0 {
-			b[i] = byte(256 + int(v))
-		} else {
-			b[i] = byte(v)
-		}
-	}
-	return strings.TrimRight(string(b), "\x00")
 }
 
 // GetHostFacts gathers facts related to Host
@@ -116,17 +103,17 @@ func GetHostFacts(f Facter) error {
 		panic(err)
 	}
 
-	var uname syscall.Utsname
-	err = syscall.Uname(&uname)
+	var uname unix.Utsname
+	err = unix.Uname(&uname)
 	if err == nil {
-		kernelRelease := int8ToString(uname.Release)
+		kernelRelease := strings.TrimRight(string(uname.Release[:]), "\x00")
 		kernelVersion := strings.Split(kernelRelease, "-")[0]
 		kvSplitted := strings.Split(kernelVersion, ".")
 		f.Add("kernelrelease", kernelRelease)
 		f.Add("kernelversion", kernelVersion)
 		f.Add("kernelmajversion", strings.Join(kvSplitted[0:2], "."))
 
-		hardwareModel := int8ToString(uname.Machine)
+		hardwareModel := strings.TrimRight(string(uname.Machine[:]), "\x00")
 		f.Add("hardwaremodel", hardwareModel)
 		f.Add("architecture", guessArch(hardwareModel))
 	}

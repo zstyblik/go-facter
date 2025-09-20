@@ -16,13 +16,14 @@ In theory, go-facter can be used as a library of sort to build custom facts.
 
 ## Requirements
 
-- go v1.5 or newer is required
+- go v1.24.0 or newer is required
 
 ## Build
 
 ```
 go get github.com/zstyblik/go-facter/...
 cd ~/go/src/github.com/zstyblik/go-facter
+go test -v ./...
 go build ./cmd/facter
 ```
 

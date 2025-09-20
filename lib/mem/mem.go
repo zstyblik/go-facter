@@ -3,7 +3,7 @@ package mem
 import (
 	"fmt"
 
-	m "github.com/shirou/gopsutil/mem"
+	m "github.com/shirou/gopsutil/v4/mem"
 	"github.com/zstyblik/go-facter/lib/common"
 )
 
